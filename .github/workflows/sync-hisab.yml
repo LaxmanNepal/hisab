@@ -1,0 +1,87 @@
+name: Sync Hisab from Google Drive
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Google Drive client
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-api-python-client google-auth
+
+      - name: Download current Google Sheet as XLSX
+        env:
+          DRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.DRIVE_SERVICE_ACCOUNT_JSON }}
+          DRIVE_FILE_ID: ${{ secrets.DRIVE_FILE_ID }}
+        run: |
+          python - <<'PY'
+          import io, json, os, pathlib
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          from googleapiclient.http import MediaIoBaseDownload
+
+          credentials = service_account.Credentials.from_service_account_info(
+              json.loads(os.environ["DRIVE_SERVICE_ACCOUNT_JSON"]),
+              scopes=["https://www.googleapis.com/auth/drive.readonly"],
+          )
+          drive = build("drive", "v3", credentials=credentials, cache_discovery=False)
+          file_id = os.environ["DRIVE_FILE_ID"]
+
+          metadata = drive.files().get(
+              fileId=file_id,
+              fields="id,name,mimeType,modifiedTime",
+          ).execute()
+
+          print("Source:", metadata)
+
+          output = pathlib.Path("Hisab.xlsx")
+          mime = metadata.get("mimeType", "")
+
+          # Your current source is a Google Sheets document, so export it as XLSX.
+          if mime == "application/vnd.google-apps.spreadsheet":
+              request = drive.files().export_media(
+                  fileId=file_id,
+                  mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              )
+          else:
+              request = drive.files().get_media(fileId=file_id)
+
+          with output.open("wb") as fh:
+              downloader = MediaIoBaseDownload(fh, request)
+              done = False
+              while not done:
+                  _, done = downloader.next_chunk()
+
+          if output.stat().st_size < 1000:
+              raise SystemExit("Downloaded workbook is unexpectedly small.")
+          print(f"Saved {output} ({output.stat().st_size} bytes)")
+          PY
+
+      - name: Commit only when workbook changed
+        run: |
+          if git diff --quiet -- Hisab.xlsx; then
+            echo "Hisab.xlsx is already up to date."
+            exit 0
+          fi
+
+          git config user.name "hisab-sync[bot]"
+          git config user.email "hisab-sync[bot]@users.noreply.github.com"
+          git add Hisab.xlsx
+          git commit -m "Sync Hisab.xlsx from Google Drive"
+          git push
