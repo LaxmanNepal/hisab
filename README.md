@@ -10,6 +10,12 @@ https://laxmannepal.github.io/hisab/
 
 ## Features
 
+- Header navigation for Calendar, Images and Receipt galleries
+- Calendar shows each matching worksheet name on its date; click a sheet name to open it
+- Original worksheet view preserves Excel cell structure and merged ranges
+- Read-only accounting checks for debit/credit balance, possible duplicate voucher references and incomplete fields
+- Responsive image gallery automatically reads files from `/images` and groups them by date
+- Responsive receipt gallery reads multiple receipt photos per day from `/receipts`
 - Automatically reads every worksheet in the workbook
 - Switch between date-wise worksheets
 - Search across all visible columns
@@ -21,7 +27,16 @@ https://laxmannepal.github.io/hisab/
 
 ## How the data is loaded
 
-The page reads `Hisab.xlsx` directly from this repository using the SheetJS browser library. To publish a newer workbook, replace `Hisab.xlsx` in the repository while keeping the same filename. Refresh the dashboard after the GitHub change has been published.
+The page reads `Hisab.xlsx` directly from this repository using the SheetJS browser library. To publish each day's updated hisab, manually replace `Hisab.xlsx` in the repository while keeping the same filename. The dashboard always reads the latest committed workbook. Keep a local backup before replacing it. Refresh the dashboard after GitHub Pages publishes the change.
+
+### Add supporting images
+
+- Upload supporting images to `/images`.
+- Upload receipt photos/scans to `/receipts`.
+- Multiple receipt images for one date are supported.
+- Put the date first in each filename, such as `2026-10-30-voucher-01.jpg` or `2026-10-30-receipt-02.png`.
+- Supported formats: JPG, JPEG, PNG, WEBP, GIF and AVIF.
+- Galleries are grouped by date automatically. New files appear after the site is refreshed.
 
 ## Enable GitHub Pages
 
