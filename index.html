@@ -20,6 +20,63 @@ footer{max-width:1440px;margin:18px auto 35px;padding:0 26px;color:var(--muted);
 .today-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:14px;margin:0 0 18px}.today-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 2px 8px #10243a08;min-width:0}.today-kicker{font-size:10px;font-weight:850;letter-spacing:.13em;color:#688099;margin-bottom:9px}.today-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.today-heading h2{font-size:17px;margin:0 0 3px;color:#1b3045}.today-heading p{font-size:11px;color:var(--muted);margin:0}.today-live,.photo-count{font-size:10px;font-weight:800;color:#087b55;background:#e7f5ef;border-radius:20px;padding:6px 9px;white-space:nowrap}.balance-amount{font-size:clamp(28px,4vw,42px);font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:20px 0 3px;color:#102b43;overflow-wrap:anywhere}.balance-caption{font-size:11px;color:var(--muted);margin-top:7px}.balance-detail{margin-top:13px;padding-top:11px;border-top:1px solid #edf1f5;font-size:11px;color:#526579}.daily-photo-wrap{height:270px;margin-top:14px;border-radius:9px;overflow:hidden;background:#eef2f6;display:grid;place-items:center}.daily-photo-wrap img{width:100%;height:100%;object-fit:contain;cursor:zoom-in;transition:transform .25s}.daily-photo-wrap img:hover{transform:scale(1.025)}.photo-placeholder{padding:20px;text-align:center;color:#718096;font-size:12px}.photo-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:10px}.photo-controls button{height:32px;font-size:11px;padding:0 9px}.photo-controls a{font-size:11px;color:#2563eb;text-decoration:none;font-weight:700}@media(max-width:850px){.today-grid{grid-template-columns:1fr}.daily-photo-wrap{height:240px}}
 .excel-launch{background:#fff;border:1px solid var(--line);border-radius:11px;padding:17px 19px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.excel-launch h2{font-size:16px;margin:0 0 4px}.excel-launch p{font-size:12px;color:var(--muted);margin:0}.excel-launch button{white-space:nowrap}
 .excel-overlay{display:none;position:fixed;inset:0;z-index:1000;background:#071421d9;padding:18px}.excel-overlay.open{display:flex}.excel-window{background:#f7f9fc;border-radius:10px;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 70px #0006}.excel-top{background:#10243a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;gap:12px}.excel-top b{font-size:13px;letter-spacing:.04em}.excel-top small{display:block;color:#c1d0dd;font-size:10px;margin-top:3px}.excel-top button{height:32px;background:#294861;border-color:#547087;color:#fff}.excel-tools{display:flex;align-items:center;gap:7px;padding:9px 12px;background:#edf2f7;border-bottom:1px solid #d8e1ea;flex-wrap:wrap}.excel-tools input{max-width:290px;height:32px;font-size:12px}.excel-tools button{height:31px;padding:0 10px}.excel-readonly{font-size:9px;font-weight:900;letter-spacing:.08em;background:#e2f4eb;color:#087b55;padding:7px 9px;border-radius:5px}.excel-tools span:last-child{font-size:10px;color:#607286}.excel-formula{display:grid;grid-template-columns:80px 1fr;gap:0;background:#fff;border-bottom:1px solid #d6dee8;min-height:34px;font-size:12px}.excel-formula div{padding:8px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.excel-formula div:first-child{background:#f0f4f8;border-right:1px solid #d6dee8;font-weight:750;color:#526579}.excel-sheet-tabs{display:flex;overflow:auto;gap:2px;background:#e8edf3;padding:6px 8px 0;flex-shrink:0}.excel-sheet-tabs button{height:30px;border-radius:6px 6px 0 0;white-space:nowrap;font-size:11px;padding:0 12px;background:#dce4ec;border-color:#d0d9e2}.excel-sheet-tabs button.active{background:#fff;border-bottom-color:#fff;color:#1758bd}.excel-grid-scroll{overflow:auto;flex:1;background:#fff}.excel-grid{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font:12px/1.35 Calibri,Arial,sans-serif;color:#1f2937}.excel-grid th,.excel-grid td{height:25px;min-width:85px;max-width:280px;padding:4px 7px;border-right:1px solid #e4e9ef;border-bottom:1px solid #e4e9ef;white-space:pre-wrap;overflow-wrap:anywhere;vertical-align:middle}.excel-grid thead th{position:sticky;top:0;z-index:3;background:#edf2f7;text-align:center;color:#526579;font-weight:700;height:24px}.excel-grid .row-head{position:sticky;left:0;z-index:2;background:#edf2f7;text-align:center;color:#526579;min-width:43px;width:43px;font-weight:700}.excel-grid thead .row-head{z-index:4;left:0}.excel-grid td{cursor:cell}.excel-grid td:hover{outline:1px solid #80a9ec;outline-offset:-1px;background:#f4f8ff}.excel-grid td.selected{outline:2px solid #2875d7;outline-offset:-2px;background:#eaf2ff}.excel-status{display:flex;justify-content:space-between;gap:10px;padding:6px 12px;background:#edf2f7;border-top:1px solid #d8e1ea;color:#65758a;font-size:10px}.excel-empty{padding:35px;text-align:center;color:#718096}@media(max-width:650px){.excel-overlay{padding:0}.excel-window{border-radius:0}.excel-top{padding:10px}.excel-tools{gap:5px}.excel-tools input{max-width:none;flex:1}.excel-status span:last-child{display:none}.excel-launch{align-items:flex-start}.excel-launch button{width:100%}}
+
+/* Unified iOS-inspired glassmorphism design system */
+:root{--navy:#182b48;--navy2:#29466d;--blue:#4169df;--bg:#edf2fa;--paper:rgba(255,255,255,.68);--line:rgba(255,255,255,.82);--ink:#18283b;--muted:#718096;--green:#087b55;--red:#c2413b;--glass-shadow:0 18px 55px rgba(40,65,100,.10)}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 8% 0%,#dbeafe 0,transparent 34%),radial-gradient(ellipse at 95% 18%,#e9ddff 0,transparent 31%),linear-gradient(135deg,#f4f7fb,#eaf0f7 55%,#f6f7fb);background-attachment:fixed}
+header{background:rgba(245,248,253,.68);color:var(--ink);border-bottom:1px solid #ffffffc9;backdrop-filter:blur(24px) saturate(175%);-webkit-backdrop-filter:blur(24px) saturate(175%);position:sticky;top:0;z-index:50}
+.head{padding-top:12px;padding-bottom:12px}
+.logo{border-radius:14px;background:linear-gradient(145deg,#6688f5,#3456b8);border:1px solid #ffffffb8;box-shadow:0 7px 18px #456ad94a}
+.brand h1{color:#1b2d46}.brand small,.headright{color:#74849a}
+.nav{padding:5px;border:1px solid #ffffffb5;border-radius:15px;background:#ffffff70;backdrop-filter:blur(15px)}
+.nav a{color:#64748b;border-radius:10px}.nav a:hover,.nav a.active{background:#fff;color:#3158bd;box-shadow:0 3px 12px #263f6814}
+main{margin-top:27px}
+.titlebar{padding:27px 30px;border-radius:25px;background:linear-gradient(115deg,rgba(255,255,255,.8),rgba(255,255,255,.43));border:1px solid #ffffffd9;box-shadow:var(--glass-shadow);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.titlebar h2{font-size:clamp(26px,4vw,39px);letter-spacing:-.045em}
+.live,.today-live,.photo-count{background:#e6f4ed;color:#087b55}
+.cards{gap:13px}
+.card,.today-card,.browser,.toolbar,.panel,.excel-launch{background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.88);border-radius:19px;box-shadow:0 10px 35px rgba(40,65,100,.075);backdrop-filter:blur(19px) saturate(145%);-webkit-backdrop-filter:blur(19px) saturate(145%)}
+.card{padding:18px 19px;transition:transform .22s,box-shadow .22s}
+.card:hover{transform:translateY(-2px);box-shadow:0 15px 35px rgba(40,65,100,.11)}
+.card strong{font-size:27px;letter-spacing:-.04em}
+.toolbar,.browser{padding:16px}
+input,select{background:rgba(255,255,255,.78);border:1px solid #e1e8f1;border-radius:12px;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:#9cb5fa;box-shadow:0 0 0 4px #6085ed19}
+button{border-radius:12px;border-color:#e0e7f0;background:rgba(255,255,255,.8);transition:transform .2s,background .2s,box-shadow .2s}
+button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 14px #34507112}
+button.primary,.viewactions button.active{background:linear-gradient(135deg,#5578e8,#345acb);border-color:#4169df;box-shadow:0 7px 18px #3d64d733}
+.day{border-radius:11px;background:#ffffff9c;border-color:#e4eaf2;transition:.2s}
+.day.hasdata{background:#e9f1ff;border-color:#c8d9ff}
+.day.selected{background:linear-gradient(135deg,#5578e8,#345acb);border-color:#4169df}
+.sheetchip,.day-sheet{border-radius:10px;background:#ffffffb5;border-color:#dce5f1}
+.sheetchip.active{background:#e7edff;border-color:#bdcbff;color:#3458bd}
+.analysisitem,.check,.notice{border-radius:13px;background:rgba(255,255,255,.7);border-color:#e5ebf3}
+.panel{overflow:hidden}
+.panelhead{background:rgba(255,255,255,.38);border-bottom-color:#e8edf4}
+th{background:rgba(235,241,249,.96);backdrop-filter:blur(12px)}
+tbody tr:hover{background:#f1f6ff}
+tfoot td{background:rgba(244,247,252,.97)}
+.gallery-card{border-radius:16px;background:rgba(255,255,255,.72);border:1px solid #ffffffd9;box-shadow:0 8px 26px #2d45680b;overflow:hidden;transition:transform .22s,box-shadow .22s}
+.gallery-card:hover{transform:translateY(-3px);box-shadow:0 16px 35px #31496b18}
+.gallery-card img{height:180px}
+.gallery-card .gmeta{padding:12px 13px}
+.gallery-date{font-size:16px;color:#293e5b;letter-spacing:-.02em;margin:20px 2px 10px}
+.empty-gallery,.empty{border-radius:15px;background:#ffffff80;border-color:#d5deea}
+.today-grid{gap:14px}
+.today-card{padding:20px}
+.daily-photo-wrap{border-radius:14px;background:#e8edf6}
+.excel-launch{padding:19px 21px}
+footer{color:#8794a5}
+.excel-overlay{background:rgba(12,23,40,.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.excel-window{border:1px solid #ffffff70;border-radius:19px;box-shadow:0 30px 90px #08152a55;overflow:hidden}
+.excel-top{background:linear-gradient(115deg,#182b48,#29466d)}
+.excel-tools{background:rgba(237,242,249,.94)}
+.excel-sheet-tabs{background:#e9eef6}
+.excel-sheet-tabs button{border-radius:9px 9px 0 0}
+@media(max-width:600px){.head{padding-left:14px;padding-right:14px}.titlebar{padding:22px 19px;border-radius:20px}.card{padding:13px}.card strong{font-size:23px}.gallery-card img{height:145px}.today-card{padding:15px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
