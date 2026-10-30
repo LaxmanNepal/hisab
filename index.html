@@ -2,91 +2,91 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Hisab — Journal Voucher Dashboard</title>
-<meta name="description" content="Browse daily journal voucher records with date navigation, search, sorting and filters.">
+<title>Hisab | Accounting Ledger</title>
+<meta name="description" content="Browse journal vouchers and daily accounting records.">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
-:root{color-scheme:light;--ink:#172033;--muted:#697586;--line:#e5eaf0;--bg:#f5f7fb;--blue:#2457d6;--green:#087f5b;--red:#c2413b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-header{background:#fff;border-bottom:1px solid var(--line)}.wrap{max-width:1240px;margin:auto;padding:22px}
-.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border-radius:12px;background:#172f65;color:white;display:grid;place-items:center;font-weight:800;font-size:19px}
-h1{font-size:21px;margin:0}.sub{color:var(--muted);font-size:13px}.top{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
-main{max-width:1240px;margin:24px auto;padding:0 22px}.notice{background:#fff8e6;border:1px solid #f2dfa8;padding:12px 14px;border-radius:10px;color:#765a16;margin-bottom:18px}
-.controls,.panel,.stat{background:#fff;border:1px solid var(--line);border-radius:13px}.controls{padding:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:16px}
-.field{display:flex;flex-direction:column;gap:5px;min-width:170px;flex:1}label{font-size:12px;color:var(--muted);font-weight:650}
-input,select{height:40px;border:1px solid #d6dde7;border-radius:8px;padding:0 11px;background:#fff;color:var(--ink);font:inherit;min-width:0}
-button{height:40px;border:0;border-radius:8px;padding:0 15px;background:var(--blue);color:#fff;font-weight:650;cursor:pointer}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}.stat{padding:15px 17px}.stat small{display:block;color:var(--muted);font-weight:600}.stat strong{display:block;font-size:22px;margin-top:5px;font-variant-numeric:tabular-nums}.credit{color:var(--green)}.debit{color:var(--red)}
-.panel{overflow:hidden}.panelhead{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.panelhead strong{font-size:15px}.meta{color:var(--muted);font-size:12px}
-.tablewrap{overflow:auto;max-height:68vh}table{border-collapse:separate;border-spacing:0;width:100%;min-width:720px;font-size:13px}th,td{padding:10px 12px;border-bottom:1px solid #edf0f4;text-align:left;white-space:pre-wrap;vertical-align:top}th{position:sticky;top:0;background:#f7f9fc;z-index:1;color:#526071;font-size:12px;cursor:pointer}tbody tr:hover{background:#f8faff}td.num{text-align:right;font-variant-numeric:tabular-nums}.empty{padding:38px;text-align:center;color:var(--muted)}
-footer{max-width:1240px;margin:18px auto 36px;padding:0 22px;color:var(--muted);font-size:12px}
-@media(max-width:650px){.wrap,main,footer{padding-left:14px;padding-right:14px}.stats{grid-template-columns:1fr}.controls .field{min-width:100%}h1{font-size:18px}}
-</style></head>
+:root{--navy:#10243a;--navy2:#183550;--blue:#2563eb;--bg:#f3f6fa;--paper:#fff;--line:#e3e9f0;--ink:#172536;--muted:#718096;--green:#087b55;--red:#c2413b;--gold:#f2b84b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:var(--navy);color:#fff}.head{max-width:1440px;margin:auto;padding:17px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:10px;background:#244762;display:grid;place-items:center;font-weight:900;font-size:20px;border:1px solid #46617a}.brand h1{font-size:19px;margin:0;letter-spacing:.08em}.brand small{color:#b8c7d5}.headright{font-size:12px;color:#c5d1dc}
+main{max-width:1440px;margin:24px auto;padding:0 26px}.crumb{font-size:12px;color:var(--muted);margin-bottom:15px}.titlebar{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:18px}.titlebar h2{font-size:24px;margin:0 0 3px}.titlebar p{margin:0;color:var(--muted)}.live{font-size:12px;color:var(--green);background:#e7f5ef;padding:7px 11px;border-radius:30px;font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:17px}.card{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:15px 17px;box-shadow:0 1px 2px #10243a08}.card label{font-size:11px;color:var(--muted);font-weight:750;letter-spacing:.06em}.card strong{display:block;font-size:22px;margin-top:7px;font-variant-numeric:tabular-nums}.card small{color:var(--muted);font-size:11px}.positive{color:var(--green)}.negative{color:var(--red)}
+.toolbar{background:#fff;border:1px solid var(--line);border-radius:11px;padding:15px;display:flex;gap:11px;align-items:end;flex-wrap:wrap;margin-bottom:15px}.field{display:flex;flex-direction:column;gap:5px;min-width:150px;flex:1}.field.search{flex:2;min-width:220px}label{font-size:11px;color:var(--muted);font-weight:750;letter-spacing:.04em}input,select{height:39px;border:1px solid #d5dee8;border-radius:7px;padding:0 10px;background:#fff;color:var(--ink);font:inherit;width:100%;min-width:0}button{height:39px;border:1px solid #cbd5e1;border-radius:7px;padding:0 13px;background:#fff;color:#334155;font-weight:650;cursor:pointer}button.primary{background:var(--blue);border-color:var(--blue);color:#fff}button:hover{filter:brightness(.97)}
+.sheetbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 13px}.sheetbar span{font-size:12px;color:var(--muted);font-weight:700}.sheetchip{border:1px solid #d9e2ec;border-radius:7px;background:#fff;padding:7px 11px;height:auto;font-size:12px}.sheetchip.active{background:#eaf1ff;border-color:#9db9fb;color:#1749ad}
+.panel{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}.panelhead{padding:14px 17px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}.panelhead strong{font-size:14px}.muted{font-size:12px;color:var(--muted)}.tablewrap{overflow:auto;max-height:65vh}table{border-collapse:separate;border-spacing:0;width:100%;min-width:850px;font-size:12px}th,td{padding:10px 12px;border-bottom:1px solid #edf1f5;text-align:left;vertical-align:middle;white-space:pre-wrap}th{position:sticky;top:0;z-index:2;background:#f1f5f9;color:#42546a;font-size:11px;letter-spacing:.025em;white-space:nowrap}th button{height:auto;border:0;padding:0;background:transparent;color:inherit;font:inherit;text-align:left}tbody tr:hover{background:#f7faff}td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.empty{padding:42px!important;text-align:center;color:var(--muted)}tfoot td{position:sticky;bottom:0;background:#f8fafc;font-weight:800;border-top:1px solid #cbd5e1}.pager{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.pager button{height:32px}.notice{padding:11px 14px;background:#fff8e8;border:1px solid #f3dfae;color:#795b16;border-radius:9px;margin-bottom:15px;font-size:12px}.error{background:#fff0ef;border-color:#efc1bc;color:#9f3029}
+footer{max-width:1440px;margin:18px auto 35px;padding:0 26px;color:var(--muted);font-size:11px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.head,main,footer{padding-left:14px;padding-right:14px}.headright{display:none}.titlebar h2{font-size:21px}.cards{gap:8px}.card{padding:12px}.card strong{font-size:19px}.field,.field.search{min-width:100%}.toolbar{padding:12px}}
+</style>
+</head>
 <body>
-<header><div class="wrap top"><div class="brand"><div class="mark">H</div><div><h1>HISAB</h1><div class="sub">Journal Voucher · Daily Transaction Register</div></div></div><div class="sub">Public read-only dashboard</div></div></header>
+<header><div class="head"><div class="brand"><div class="logo">H</div><div><h1>HISAB</h1><small>Accounting & Journal Voucher Register</small></div></div><div class="headright">FINANCE WORKSPACE&nbsp; · &nbsp;READ ONLY</div></div></header>
 <main>
-<div class="notice" id="status">Loading workbook from the public repository…</div>
-<section class="controls">
- <div class="field"><label for="sheet">DATE / WORKSHEET</label><select id="sheet" disabled><option>Loading…</option></select></div>
- <div class="field"><label for="search">SEARCH ALL VISIBLE FIELDS</label><input id="search" placeholder="Search particulars, remarks, voucher…" disabled></div>
- <div class="field"><label for="rows">ROWS PER VIEW</label><select id="rows"><option>25</option><option selected>50</option><option>100</option><option>250</option><option>All</option></select></div>
- <button id="reset" type="button">Reset filters</button>
+<div class="crumb">Workspace / Accounting / Journal vouchers</div>
+<div class="titlebar"><div><h2>Journal Voucher Ledger</h2><p>Daily records · Worksheet-wise browsing · Searchable transaction register</p></div><div class="live" id="status">● Connecting to workbook…</div></div>
+<div class="notice" id="hint">The dashboard reads the Excel workbook directly. Merged cells are expanded for easier reading; original worksheet values are not changed.</div>
+<section class="cards">
+<div class="card"><label>TRANSACTIONS SHOWN</label><strong id="count">—</strong><small>Rows matching current filters</small></div>
+<div class="card"><label>DEBIT TOTAL</label><strong class="negative" id="debit">—</strong><small id="debitNote">Detected from amount columns</small></div>
+<div class="card"><label>CREDIT TOTAL</label><strong class="positive" id="credit">—</strong><small id="creditNote">Detected from amount columns</small></div>
+<div class="card"><label>WORKSHEETS</label><strong id="sheets">—</strong><small>Available dates / registers</small></div>
 </section>
-<section class="stats">
- <div class="stat"><small>VISIBLE ROWS</small><strong id="count">—</strong></div>
- <div class="stat"><small>DEBIT TOTAL (detected)</small><strong class="debit" id="debit">—</strong></div>
- <div class="stat"><small>CREDIT TOTAL (detected)</small><strong class="credit" id="credit">—</strong></div>
+<section class="toolbar">
+<div class="field"><label for="sheet">SELECT DATE / WORKSHEET</label><select id="sheet" disabled><option>Loading…</option></select></div>
+<div class="field search"><label for="search">SEARCH TRANSACTIONS</label><input id="search" placeholder="Voucher no., account, particulars, amount…" disabled></div>
+<div class="field"><label for="rows">ROWS PER PAGE</label><select id="rows"><option>25</option><option selected>50</option><option>100</option><option>250</option><option>All</option></select></div>
+<button id="clear">Clear filters</button>
 </section>
-<section class="panel"><div class="panelhead"><strong id="sheetTitle">Transactions</strong><span class="meta" id="meta">Select a worksheet to begin</span></div>
-<div class="tablewrap"><table><thead id="thead"></thead><tbody id="tbody"><tr><td class="empty">Waiting for workbook…</td></tr></tbody></table></div></section>
+<div class="sheetbar"><span>QUICK ACCESS</span><div id="quickSheets"></div></div>
+<section class="panel">
+<div class="panelhead"><strong id="tableTitle">Transaction details</strong><span class="muted" id="meta">Loading workbook…</span></div>
+<div class="tablewrap"><table><thead id="thead"></thead><tbody id="tbody"><tr><td class="empty">Loading worksheet data…</td></tr></tbody><tfoot id="tfoot"></tfoot></table></div>
+<div class="pager"><span class="muted" id="pageInfo">—</span><div><button id="prev">← Previous</button> <button id="next">Next →</button></div></div>
+</section>
 </main>
-<footer>HISAB · Data is loaded from the public GitHub repository. Values are presented for viewing and may be copied by visitors. Always verify figures against the original accounting records.</footer>
+<footer>HISAB ACCOUNTING LEDGER · For reference and browsing only. Verify all balances against the original accounting records before making decisions.</footer>
 <script>
 const FILE='https://raw.githubusercontent.com/LaxmanNepal/hisab/main/Hisab.xlsx';
-let book=null, currentRows=[], filtered=[], sortCol=-1, sortAsc=true, headers=[];
-const $=id=>document.getElementById(id);
-const status=(msg,bad=false)=>{ $('status').textContent=msg; $('status').style.background=bad?'#fff0ef':'#fff8e6'; $('status').style.borderColor=bad?'#f0c2be':'#f2dfa8'; };
-function clean(v){if(v===null||v===undefined)return '';if(v instanceof Date)return v.toLocaleDateString();return String(v).trim()}
-function money(n){return new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(n)}
-function numeric(v){if(typeof v==='number')return v;let s=String(v??'').replace(/[,\s]/g,'').replace(/[()]/g,'');if(!s||!/[0-9]/.test(s))return null;let n=Number(s);return Number.isFinite(n)?n:null}
-function render(){
- const q=$('search').value.toLocaleLowerCase(), limit=$('rows').value;
- filtered=currentRows.filter(r=>r.some(v=>clean(v).toLocaleLowerCase().includes(q)));
- if(sortCol>=0)filtered.sort((a,b)=>{let x=clean(a[sortCol]),y=clean(b[sortCol]),nx=numeric(x),ny=numeric(y);let c=nx!==null&&ny!==null?nx-ny:x.localeCompare(y,undefined,{numeric:true,sensitivity:'base'});return sortAsc?c:-c});
- let debitIndex=headers.findIndex(h=>/debit|dr\.?|जम्मा डेबिट|डेबिट/i.test(h)), creditIndex=headers.findIndex(h=>/credit|cr\.?|जम्मा क्रेडिट|क्रेडिट/i.test(h));
- let d=0,c=0,dc=0,cc=0;filtered.forEach(r=>{let a=debitIndex>=0?numeric(r[debitIndex]):null,b=creditIndex>=0?numeric(r[creditIndex]):null;if(a!==null){d+=a;dc++}if(b!==null){c+=b;cc++}});
- $('count').textContent=filtered.length.toLocaleString();$('debit').textContent=dc?money(d):'Not detected';$('credit').textContent=cc?money(c):'Not detected';
- $('sheetTitle').textContent=$('sheet').value||'Transactions';$('meta').textContent=filtered.length.toLocaleString()+' matching rows · '+headers.length+' columns';
- $('thead').innerHTML='<tr>'+headers.map((h,i)=>'<th data-col="'+i+'">'+escapeHtml(h||('Column '+(i+1)))+(sortCol===i?(sortAsc?' ▲':' ▼'):'')+'</th>').join('')+'</tr>';
- let n=limit==='All'?filtered.length:Number(limit);let view=filtered.slice(0,n);
- $('tbody').innerHTML=view.length?view.map(r=>'<tr>'+headers.map((h,i)=>{let v=clean(r[i]);return '<td class="'+(numeric(v)!==null?'num':'')+'">'+escapeHtml(v)+'</td>'}).join('')+'</tr>').join(''):'<tr><td class="empty" colspan="'+Math.max(1,headers.length)+'">No matching rows</td></tr>';
- $('thead').querySelectorAll('th').forEach(th=>th.addEventListener('click',()=>{let i=Number(th.dataset.col);if(sortCol===i)sortAsc=!sortAsc;else{sortCol=i;sortAsc=true}render()}));
- if(filtered.length>n)$('meta').textContent+=' · showing first '+n;
+let wb,headers=[],records=[],filtered=[],sortIndex=-1,sortAsc=true,page=1,activeSheet='';
+const el=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clean=v=>v===null||v===undefined?'':String(v).trim();
+const num=v=>{if(typeof v==='number')return v;let s=String(v??'').trim().replace(/,/g,'').replace(/^\((.*)\)$/,'-$1');if(!s||!/[0-9]/.test(s))return null;let n=Number(s);return Number.isFinite(n)?n:null};
+const fmt=n=>new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+function setStatus(s,bad=false){el('status').textContent=(bad?'● ':'● ')+s;el('status').style.color=bad?'#b42318':'#087b55';el('status').style.background=bad?'#fff0ef':'#e7f5ef'}
+function expandMerges(ws,matrix){
+ (ws['!merges']||[]).forEach(m=>{let v=matrix[m.s.r]?.[m.s.c];if(v!==undefined&&v!=='')for(let r=m.s.r;r<=m.e.r;r++)for(let c=m.s.c;c<=m.e.c;c++){matrix[r]??=[];if(matrix[r][c]===''||matrix[r][c]===undefined)matrix[r][c]=v}});
+ return matrix;
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function scoreHeader(row){let vals=row.map(clean).filter(Boolean);if(vals.length<2)return -1;let words=vals.join(' ').toLowerCase();let keywords=/date|voucher|particular|narration|account|debit|credit|amount|ledger|भौचर|मिति|विवरण|डेबिट|क्रेडिट|खाता|जम्मा/.test(words);return vals.length+(keywords?5:0)}
 function loadSheet(name){
- const ws=book.Sheets[name], matrix=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false});
- // Find the most likely header row: the first row containing multiple non-empty labels.
- let headerRow=matrix.findIndex(row=>row.filter(v=>String(v).trim()).length>=3);
- if(headerRow<0)headerRow=0;
- headers=(matrix[headerRow]||[]).map((v,i)=>clean(v)||('Column '+(i+1)));
- currentRows=matrix.slice(headerRow+1).filter(row=>row.some(v=>String(v).trim()!==''));
- currentRows=currentRows.map(row=>headers.map((_,i)=>row[i]??''));
- sortCol=-1;render();
+ activeSheet=name;let ws=wb.Sheets[name];let matrix=expandMerges(ws,XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false}));
+ let best=0,bestScore=-1;for(let i=0;i<Math.min(matrix.length,35);i++){let s=scoreHeader(matrix[i]||[]);if(s>bestScore){bestScore=s;best=i}}
+ headers=(matrix[best]||[]).map((v,i)=>clean(v)||'Column '+(i+1));
+ // Ignore fully empty trailing columns, but preserve internal blank columns.
+ while(headers.length&&/^Column \d+$/.test(headers.at(-1)))headers.pop();
+ records=matrix.slice(best+1).filter(row=>row.some(v=>clean(v))).map(row=>headers.map((_,i)=>row[i]??''));
+ // Fill down cells that were vertically merged, and remove repeated header rows.
+ for(let i=1;i<records.length;i++)for(let c=0;c<headers.length;c++)if(records[i][c]===''&&records[i-1][c]!==''&&records[i-1][c]!==undefined){/* keep blank unless merge metadata identifies it */}
+ records=records.filter(row=>row.some(v=>clean(v))&&!row.every((v,i)=>clean(v)===headers[i]));
+ sortIndex=-1;page=1;render();
+ el('tableTitle').textContent=name+' · Transaction register';
 }
-async function init(){
- try{
- const res=await fetch(FILE,{cache:'no-store'});if(!res.ok)throw new Error('GitHub returned HTTP '+res.status);
- const buf=await res.arrayBuffer();book=XLSX.read(buf,{type:'array',cellDates:true});
- const names=book.SheetNames.filter(n=>book.Sheets[n]);
- if(!names.length)throw new Error('No worksheets found');
- $('sheet').innerHTML=names.map(n=>'<option value="'+escapeHtml(n)+'">'+escapeHtml(n)+'</option>').join('');
- $('sheet').disabled=false;$('search').disabled=false;
- $('sheet').addEventListener('change',e=>loadSheet(e.target.value));
- $('search').addEventListener('input',render);$('rows').addEventListener('change',render);
- $('reset').addEventListener('click',()=>{$('search').value='';$('rows').value='50';sortCol=-1;render()});
- loadSheet(names[0]);status('Workbook loaded successfully · '+names.length+' worksheets detected.');
- }catch(e){status('Unable to load workbook: '+e.message+'. Check that Hisab.xlsx is public and the repository file name has not changed.',true);$('tbody').innerHTML='<tr><td class="empty">Workbook could not be loaded.</td></tr>'}
+function amountCols(){return {d:headers.findIndex(h=>/\bdebit\b|\bdr\.?\b|डेबिट/i.test(h)),c:headers.findIndex(h=>/\bcredit\b|\bcr\.?\b|क्रेडिट/i.test(h))}}
+function render(){
+ let q=el('search').value.toLowerCase();filtered=records.filter(r=>r.some(v=>clean(v).toLowerCase().includes(q)));
+ if(sortIndex>=0)filtered.sort((a,b)=>{let x=clean(a[sortIndex]),y=clean(b[sortIndex]),nx=num(x),ny=num(y),z=nx!==null&&ny!==null?nx-ny:x.localeCompare(y,undefined,{numeric:true,sensitivity:'base'});return sortAsc?z:-z});
+ let {d,c}=amountCols(),ds=0,cs=0,dh=0,ch=0;filtered.forEach(r=>{let a=d>=0?num(r[d]):null,b=c>=0?num(r[c]):null;if(a!==null){ds+=a;dh++}if(b!==null){cs+=b;ch++}});
+ el('count').textContent=filtered.length.toLocaleString();el('debit').textContent=dh?fmt(ds):'Not detected';el('credit').textContent=ch?fmt(cs):'Not detected';el('debitNote').textContent=dh?dh+' numeric entries':'No recognizable debit column';el('creditNote').textContent=ch?ch+' numeric entries':'No recognizable credit column';
+ let size=el('rows').value==='All'?Math.max(filtered.length,1):Number(el('rows').value),pages=Math.max(1,Math.ceil(filtered.length/size));page=Math.min(page,pages);let start=(page-1)*size,view=filtered.slice(start,start+size);
+ el('thead').innerHTML='<tr>'+headers.map((h,i)=>'<th><button data-sort="'+i+'">'+esc(h)+(sortIndex===i?(sortAsc?' ↑':' ↓'):'')+'</button></th>').join('')+'</tr>';
+ el('tbody').innerHTML=view.length?view.map(r=>'<tr>'+headers.map((h,i)=>{let v=clean(r[i]),n=num(v);return '<td class="'+(n!==null?'num':'')+'">'+esc(v)+'</td>'}).join('')+'</tr>').join(''):'<tr><td class="empty" colspan="'+Math.max(headers.length,1)+'">No matching transactions found</td></tr>';
+ el('tfoot').innerHTML='<tr><td colspan="'+Math.max(headers.length,1)+'">FILTERED TOTALS '+(dh||ch?' · Debit: '+(dh?fmt(ds):'—')+' · Credit: '+(ch?fmt(cs):'—'):' · Amount columns not detected')+'</td></tr>';
+ el('meta').textContent=filtered.length.toLocaleString()+' matching rows · '+headers.length+' columns';
+ el('pageInfo').textContent=filtered.length?('Showing '+(start+1)+'–'+Math.min(start+size,filtered.length)+' of '+filtered.length):'No records';
+ el('prev').disabled=page<=1;el('next').disabled=page>=pages;
+ el('thead').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{let i=Number(b.dataset.sort);if(sortIndex===i)sortAsc=!sortAsc;else{sortIndex=i;sortAsc=true}render()}));
 }
+function buildQuick(){let names=wb.SheetNames;el('quickSheets').innerHTML=names.slice(0,8).map(n=>'<button class="sheetchip '+(n===activeSheet?'active':'')+'" data-name="'+esc(n)+'">'+esc(n)+'</button>').join('')+(names.length>8?'<span class="muted">Use date selector for '+(names.length-8)+' more</span>':'');el('quickSheets').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{el('sheet').value=b.dataset.name;loadSheet(b.dataset.name);buildQuick()}))}
+async function init(){try{let res=await fetch(FILE,{cache:'no-store'});if(!res.ok)throw Error('Workbook request failed ('+res.status+')');let buf=await res.arrayBuffer();wb=XLSX.read(buf,{type:'array',cellDates:true});if(!wb.SheetNames.length)throw Error('No worksheets found');el('sheets').textContent=wb.SheetNames.length;el('sheet').innerHTML=wb.SheetNames.map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join('');el('sheet').disabled=false;el('search').disabled=false;el('sheet').addEventListener('change',e=>{loadSheet(e.target.value);buildQuick()});el('search').addEventListener('input',()=>{page=1;render()});el('rows').addEventListener('change',()=>{page=1;render()});el('clear').addEventListener('click',()=>{el('search').value='';el('rows').value='50';sortIndex=-1;page=1;render()});el('prev').addEventListener('click',()=>{page--;render()});el('next').addEventListener('click',()=>{page++;render()});loadSheet(wb.SheetNames[0]);buildQuick();setStatus('Workbook connected · '+wb.SheetNames.length+' worksheets');}catch(e){setStatus('Workbook unavailable',true);el('hint').textContent=e.message+' · Confirm that Hisab.xlsx remains public in the repository.';el('hint').classList.add('error');el('tbody').innerHTML='<tr><td class="empty">Could not read workbook.</td></tr>'}}
 init();
 </script></body></html>
