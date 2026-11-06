@@ -73,15 +73,42 @@ jobs:
           print(f"Saved {output} ({output.stat().st_size} bytes)")
           PY
 
-      - name: Commit only when workbook changed
+      - name: Generate public image and receipt manifests
         run: |
-          if git diff --quiet -- Hisab.xlsx; then
-            echo "Hisab.xlsx is already up to date."
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          extensions = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"}
+          owner_repo = "LaxmanNepal/hisab"
+          branch = "main"
+
+          for folder in ("images", "receipts"):
+              root = Path(folder)
+              files = []
+              if root.exists():
+                  for path in sorted(root.iterdir(), key=lambda p: p.name.lower()):
+                      if path.is_file() and path.suffix.lower() in extensions:
+                          files.append({
+                              "name": path.name,
+                              "path": path.as_posix(),
+                              "size": path.stat().st_size,
+                              "download_url": f"https://raw.githubusercontent.com/{owner_repo}/{branch}/{path.as_posix()}",
+                          })
+              manifest = root / "manifest.json"
+              manifest.write_text(json.dumps(files, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+              print(f"Generated {manifest}: {len(files)} image(s)")
+          PY
+
+      - name: Commit workbook and gallery manifests when changed
+        run: |
+          if git diff --quiet -- Hisab.xlsx images/manifest.json receipts/manifest.json; then
+            echo "Workbook and gallery manifests are already up to date."
             exit 0
           fi
 
           git config user.name "hisab-sync[bot]"
           git config user.email "hisab-sync[bot]@users.noreply.github.com"
-          git add Hisab.xlsx
-          git commit -m "Sync Hisab.xlsx from Google Drive"
+          git add Hisab.xlsx images/manifest.json receipts/manifest.json
+          git commit -m "Sync workbook and refresh gallery manifests"
           git push
