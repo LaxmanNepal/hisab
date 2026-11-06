@@ -196,7 +196,7 @@ body.compact-ui .card{padding:10px}body.compact-ui .feature-dashboard,body.compa
 <script>
 const FILE='https://raw.githubusercontent.com/LaxmanNepal/hisab/main/Hisab.xlsx';
 let wb,headers=[],records=[],filtered=[],sortIndex=-1,sortAsc=true,page=1,activeSheet='',sheetDates=new Map(),currentMonth=new Date();
-const GH_API="https://api.github.com/repos/LaxmanNepal/hisab/contents/";
+
 const el=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clean=v=>v===null||v===undefined?'':String(v).trim();
