@@ -96,7 +96,7 @@ jobs:
                               "download_url": f"https://raw.githubusercontent.com/{owner_repo}/{branch}/{path.as_posix()}",
                           })
               manifest = root / "manifest.json"
-              manifest.write_text(json.dumps(files, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+              manifest.write_text(json.dumps(files, ensure_ascii=False, indent=2) + chr(10), encoding="utf-8")
               print(f"Generated {manifest}: {len(files)} image(s)")
           PY
 
