@@ -122,12 +122,29 @@ body.compact-ui .card{padding:10px}body.compact-ui .feature-dashboard,body.compa
 @media print{header,.calendarSection,.browser,.today-grid,.toolbar,.sheetbar,.viewactions,.pager,.excel-launch,.feature-tools,.detail-overlay,footer{display:none!important}body{background:#fff!important;color:#111!important}.feature-dashboard,.feature-card,.panel,.card{box-shadow:none!important;background:#fff!important;border:1px solid #ddd!important;break-inside:avoid}main{max-width:none;margin:0;padding:0}.tablewrap{max-height:none!important;overflow:visible!important}th{position:static!important}}
 </style>
 
-</head>
+<style>
+.balance-hero{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:235px;margin:16px 0 20px;padding:30px 36px;border-radius:26px;color:#fff;background:radial-gradient(ellipse at 82% 45%,#345d8d 0%,transparent 38%),linear-gradient(120deg,#10243d 0%,#183b5d 55%,#142d49 100%);box-shadow:0 18px 48px #132b4930}
+.balance-hero:before{content:"";position:absolute;z-index:-1;width:340px;height:340px;right:9%;top:-190px;border-radius:50%;background:#70a5ff20;filter:blur(3px)}
+.balance-hero-copy{position:relative;z-index:2}.balance-hero-eyebrow{display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.17em;font-weight:850;color:#b7cce3}.balance-hero-pulse{width:8px;height:8px;border-radius:50%;background:#69e1ad;box-shadow:0 0 0 5px #69e1ad22,0 0 18px #69e1ad}
+.balance-hero h2{font-size:clamp(20px,3vw,28px);letter-spacing:-.035em;margin:13px 0 3px;color:#fff}.balance-hero-copy>p{font-size:11px;color:#c1d0e1;margin:0}
+.hero-balance-value{font-size:clamp(42px,7vw,68px);line-height:1.12;letter-spacing:-.055em;font-weight:850;font-variant-numeric:tabular-nums;margin:14px 0 8px;color:#6fe0ad;text-shadow:0 4px 28px #6fe0ad22;transition:color .35s ease}
+.hero-balance-value span{font-size:clamp(14px,2vw,19px);letter-spacing:.08em;font-weight:750;margin-left:7px;color:#d3e0ef}
+.balance-hero.is-negative .hero-balance-value{color:#ff8888;text-shadow:0 4px 28px #ff888822}.balance-hero.is-zero .hero-balance-value{color:#ffd27a;text-shadow:0 4px 28px #ffd27a22}
+.hero-balance-foot{display:flex;align-items:center;gap:8px;font-size:10px;color:#c1d0e1}.hero-balance-dot{width:7px;height:7px;border-radius:50%;background:#69e1ad}.balance-hero.is-negative .hero-balance-dot{background:#ff8888}.balance-hero.is-zero .hero-balance-dot{background:#ffd27a}
+.balance-hero-visual{position:relative;display:grid;place-items:center;width:200px;height:170px;flex:0 0 200px}.hero-orbit{position:absolute;border:1px solid #a8c8ed32;border-radius:50%;transform:rotate(-25deg)}.hero-orbit-one{width:175px;height:95px}.hero-orbit-two{width:205px;height:125px;transform:rotate(38deg)}.hero-coin{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f4d99a,#c18d3e);color:#273a50;font-size:28px;font-weight:900;box-shadow:0 10px 32px #050e1b66,inset 0 2px 4px #fff9;animation:coinFloat 4s ease-in-out infinite}.hero-visual-caption{position:absolute;bottom:0;font-size:8px;letter-spacing:.2em;color:#b7cce3;font-weight:800}
+@keyframes coinFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-7px) rotate(5deg)}}
+@media(max-width:640px){.balance-hero{padding:23px 20px;min-height:205px}.balance-hero-visual{width:100px;height:125px;flex-basis:100px}.hero-coin{width:68px;height:68px;font-size:22px}.hero-orbit-one{width:110px;height:64px}.hero-orbit-two{width:130px;height:82px}.hero-visual-caption{font-size:7px;white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){.hero-coin{animation:none}}
+</style></head>
 <body>
 <header><div class="head"><div class="brand"><div class="logo">H</div><div><h1>HISAB</h1><small>Accounting & Journal Voucher Register</small></div></div><nav class="nav"><a href="#calendarSection" class="active">Calendar</a><a href="images/">Images</a><a href="receipts/">Receipt</a></nav><div class="headright">FINANCE WORKSPACE&nbsp; · &nbsp;READ ONLY</div></div></header>
 <main>
 <div class="crumb">Workspace / Accounting / Journal vouchers</div>
 <div class="titlebar"><div><div class="dash-eyebrow">YOUR DAILY FINANCE SNAPSHOT</div><h2>Journal Voucher Ledger</h2><p id="activeDateLabel">Opening today’s records…</p></div><div class="titlebar-right"><div class="live" id="status">● Connecting to workbook…</div><div class="selected-date-pill" id="selectedDatePill">TODAY</div></div></div>
+<section class="balance-hero section" id="balanceHero" aria-live="polite">
+<div class="balance-hero-copy"><span class="balance-hero-eyebrow"><span class="balance-hero-pulse"></span> YOUR MONEY RIGHT NOW</span><h2>Today’s available balance</h2><p id="heroBalanceDate">Checking latest closing balance…</p><div class="hero-balance-value" id="heroBalanceValue">500.00 <span>KWD</span></div><div class="hero-balance-foot"><span class="hero-balance-dot"></span><span id="heroBalanceStatus">Waiting for workbook data</span></div></div>
+<div class="balance-hero-visual" aria-hidden="true"><div class="hero-orbit hero-orbit-one"></div><div class="hero-orbit hero-orbit-two"></div><div class="hero-coin">د.ك</div><div class="hero-visual-caption">CLOSING BALANCE</div></div>
+</section>
 
 <section class="all-summary section" id="allSummary">
 <div class="all-summary-head"><div><span class="dash-eyebrow">MASTER SUMMARY · SOURCE: ALL WORKSHEET</span><h2>Income &amp; expense dashboard</h2><p id="allSummaryMeta">Reading the all worksheet…</p></div><div class="all-summary-actions"><button id="allRefresh" type="button">Refresh</button><button id="allOpenExcel" class="primary" type="button">Excel preview</button><button id="allDownloadImage" type="button">Download image</button></div></div>
@@ -262,7 +279,37 @@ function initNavigation(){document.querySelectorAll('.nav a').forEach(a=>a.addEv
 function kuwaitToday(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kuwait',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const v={};p.forEach(x=>v[x.type]=x.value);return new Date(+v.year,+v.month-1,+v.day)}
 function sheetDateObj(n){let p=parseSheetDate(n);return p?new Date(p.year,p.month,p.day):null}
 function closingBalance(n){let ws=wb.Sheets[n],rg=XLSX.utils.decode_range(ws["!ref"]||"A1:A1"),re=/(अन्तिम\s*मौज्दात|अन्तिम\s*मौजदात|closing\s*balance|ending\s*balance|final\s*balance)/i,found=[];for(let r=rg.s.r;r<=rg.e.r;r++)for(let c=rg.s.c;c<=rg.e.c;c++){let x=ws[XLSX.utils.encode_cell({r,c})],t=x?String(x.w??x.v??"").trim():"";if(!t||!re.test(t))continue;let vals=[];for(let rr=r;rr<=Math.min(rg.e.r,r+2);rr++)for(let cc=c+1;cc<=Math.min(rg.e.c,c+8);cc++){let z=ws[XLSX.utils.encode_cell({r:rr,c:cc})];if(z&&z.v!==null&&z.v!==undefined&&String(z.v).trim()!==""){let v=typeof z.v==="number"?z.v:Number(String(z.v).replace(/,/g,"").replace(/^\((.*)\)$/,"-$1"));if(Number.isFinite(v))vals.push({value:v,cell:XLSX.utils.encode_cell({r:rr,c:cc})})}}if(vals.length)found.push({label:t,...vals.at(-1)})}return found.at(-1)||null}
-function showDailyBalance(){let today=kuwaitToday(),items=wb.SheetNames.map(name=>({name,date:sheetDateObj(name)})).filter(x=>x.date&&x.date<=today).sort((a,b)=>a.date-b.date),chosen=items.find(x=>x.date.getTime()===today.getTime()),fallback=!chosen;if(!chosen)chosen=items.at(-1);el("balanceDate").textContent=new Intl.DateTimeFormat("en",{dateStyle:"full"}).format(chosen?chosen.date:today)+(fallback?" · latest available earlier date":" · today");if(!chosen){el("closingBalance").textContent="Not found";el("balanceSource").textContent="No dated worksheet exists for today.";el("balanceDetail").textContent="";return}let ws=wb.Sheets[chosen.name],cell=ws?ws["C15"]:null,value=cell?(cell.w??cell.v):null;if(value===null||value===undefined||String(value).trim()===""){el("closingBalance").textContent="Not found";el("balanceSource").textContent="Source: "+chosen.name+" · cell C15 is empty";}else{let numeric=typeof cell.v==="number"?cell.v:Number(String(value).replace(/,/g,"").replace(/^\\((.*)\\)$/,"-$1"));el("closingBalance").textContent=Number.isFinite(numeric)?new Intl.NumberFormat("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}).format(numeric):String(value);el("balanceSource").textContent="Source: "+chosen.name+" · cell C15";}el("balanceDetail").textContent=fallback?"Today has no matching worksheet. Showing cell C15 from the latest earlier worksheet: "+chosen.name+".":"Today’s worksheet: "+chosen.name+".";}
+function animateHeroBalance(target,dateText,statusText){
+ const hero=el("balanceHero"),value=el("heroBalanceValue"),date=el("heroBalanceDate"),status=el("heroBalanceStatus");
+ if(date)date.textContent=dateText||"Latest closing balance";
+ if(status)status.textContent=statusText||"Verified from daily worksheet";
+ if(!hero||!value||!Number.isFinite(target)){if(value)value.innerHTML='Unavailable <span>KWD</span>';return}
+ hero.classList.toggle("is-negative",target<0);hero.classList.toggle("is-zero",target===0);
+ const startValue=500,duration=1700,start=performance.now();
+ value.innerHTML='500.00 <span>KWD</span>';
+ function frame(now){const p=Math.min(1,(now-start)/duration),ease=1-Math.pow(1-p,4),current=startValue+(target-startValue)*ease;value.innerHTML=new Intl.NumberFormat("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}).format(p===1?target:current)+' <span>KWD</span>';if(p<1)requestAnimationFrame(frame)}
+ requestAnimationFrame(frame);
+}
+function showDailyBalance(){
+ let today=kuwaitToday(),items=wb.SheetNames.map(name=>({name,date:sheetDateObj(name)})).filter(x=>x.date&&x.date<=today).sort((a,b)=>a.date-b.date),chosen=items.find(x=>x.date.getTime()===today.getTime()),fallback=!chosen;
+ if(!chosen)chosen=items.at(-1);
+ const dateLabel=new Intl.DateTimeFormat("en",{dateStyle:"full"}).format(chosen?chosen.date:today)+(fallback?" · latest available earlier date":" · today");
+ el("balanceDate").textContent=dateLabel;
+ if(!chosen){el("closingBalance").textContent="Not found";el("balanceSource").textContent="No dated worksheet exists for today.";el("balanceDetail").textContent="";animateHeroBalance(NaN,dateLabel,"No dated worksheet found");return}
+ let ws=wb.Sheets[chosen.name],cell=ws?ws["C15"]:null,value=cell?(cell.w??cell.v):null;
+ if(value===null||value===undefined||String(value).trim()===""){
+  el("closingBalance").textContent="Not found";el("balanceSource").textContent="Source: "+chosen.name+" · cell C15 is empty";el("balanceDetail").textContent="The exact closing balance is not available in cell C15.";animateHeroBalance(NaN,dateLabel,"Closing balance cell is empty");return
+ }
+ let numeric=typeof cell.v==="number"?cell.v:Number(String(value).replace(/,/g,"").replace(/^\\((.*)\\)$/,"-$1"));
+ if(Number.isFinite(numeric)){
+  el("closingBalance").textContent=new Intl.NumberFormat("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}).format(numeric);
+  animateHeroBalance(numeric,dateLabel,"Source: "+chosen.name+" · cell C15");
+ }else{
+  el("closingBalance").textContent=String(value);animateHeroBalance(NaN,dateLabel,"Closing balance is not numeric");
+ }
+ el("balanceSource").textContent="Source: "+chosen.name+" · cell C15";
+ el("balanceDetail").textContent=fallback?"Today has no matching worksheet. Showing cell C15 from the latest earlier worksheet: "+chosen.name+".":"Today’s worksheet: "+chosen.name+".";
+}
 const mon=["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];let dailyPhotos=[],dailyPhotoIndex=0;
 function photoDateFromName(n,y){let m=n.toLowerCase().replace(/\.[^.]+$/,"").match(/^(\d{1,2})[-_ ]([a-z]{3,9})$/);if(!m)return null;let mo=mon.findIndex(x=>m[2].startsWith(x));if(mo<0)return null;let d=new Date(y,mo,+m[1]);return d.getMonth()===mo&&d.getDate()===+m[1]?d:null}
 async function loadDailyPhoto(){try{let res=await fetch(GH_API+"images");if(!res.ok)throw Error();let today=kuwaitToday(),y=today.getFullYear(),files=await res.json();dailyPhotos=files.filter(f=>f.type==="file"&&/\.(jpe?g|png|webp|gif)$/i.test(f.name)).map(f=>({...f,date:photoDateFromName(f.name,y)})).filter(f=>f.date).sort((a,b)=>a.date-b.date);let start=today,eligible=dailyPhotos.filter(f=>f.date<=start),exact=eligible.findIndex(f=>f.date.getTime()===start.getTime());dailyPhotoIndex=exact>=0?exact:dailyPhotos.indexOf(eligible.at(-1));if(dailyPhotoIndex<0){el("dailyPhoto").innerHTML='<div class="photo-placeholder">No dated voucher photo found in /images.</div>';el("photoDate").textContent="No dated photo available";return}renderDailyPhoto()}catch(e){el("dailyPhoto").innerHTML='<div class="photo-placeholder">Could not load /images. Check that the folder exists and is public.</div>';el("photoDate").textContent="Image unavailable"}}
