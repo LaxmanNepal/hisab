@@ -186,6 +186,26 @@ body.dark-ui .our-overview-card span{color:#9aabc1}
 @media(max-width:900px){.our-overview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:560px){.our-overview{padding:16px}.our-overview-heading{align-items:flex-start}.our-overview-source{font-size:8px}.our-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.our-overview-card{min-height:92px;padding:12px}.our-overview-card strong{font-size:18px}}
 </style>
+
+<style>
+/* Compact single-row mobile header: brand + horizontally scrollable navigation */
+@media(max-width:700px){
+  .head{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;padding:8px 10px;min-width:0}
+  .brand{flex:0 0 auto;gap:7px;min-width:0}
+  .logo{width:32px;height:32px;border-radius:10px;font-size:16px}
+  .brand h1{font-size:14px;letter-spacing:.06em}
+  .brand small,.headright{display:none}
+  .nav{flex:1 1 auto;min-width:0;width:auto;overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap;gap:3px;padding:4px;border-radius:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{flex:0 0 auto;white-space:nowrap;padding:7px 9px;font-size:10px;border-radius:8px}
+}
+@media(max-width:380px){
+  .head{gap:6px;padding-left:8px;padding-right:8px}
+  .logo{width:29px;height:29px}
+  .brand h1{font-size:13px}
+  .nav a{padding:7px 8px;font-size:9px}
+}
+</style>
 </head>
 <body>
 <header><div class="head"><div class="brand"><div class="logo">H</div><div><h1>HISAB</h1><small>Accounting & Journal Voucher Register</small></div></div><nav class="nav" aria-label="Main navigation"><a href="#allSummary">Overview</a><a href="#ledgerSection">Ledger</a><a href="#calendarSection" class="active">Calendar</a><a href="#featureDashboard">Analytics</a><a href="images/">Images</a><a href="receipts/">Receipts</a></nav><div class="headright">FINANCE WORKSPACE&nbsp; · &nbsp;READ ONLY</div></div></header>
