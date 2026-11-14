@@ -49,6 +49,10 @@ jobs:
           ).execute()
 
           print("Source:", metadata)
+          pathlib.Path("/tmp/hisab-source-metadata.json").write_text(
+              json.dumps({"source_name": metadata.get("name", "Google Sheet"), "source_modified_at": metadata.get("modifiedTime")}),
+              encoding="utf-8",
+          )
 
           output = pathlib.Path("Hisab.xlsx")
           mime = metadata.get("mimeType", "")
@@ -107,8 +111,24 @@ jobs:
             exit 0
           fi
 
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          source_path = Path("/tmp/hisab-source-metadata.json")
+          source = json.loads(source_path.read_text(encoding="utf-8")) if source_path.exists() else {}
+          status = {
+              "synced_at": datetime.now(timezone.utc).isoformat(),
+              "source_name": source.get("source_name", "Google Sheet"),
+              "source_modified_at": source.get("source_modified_at"),
+              "meaning": "Last successful sync that published changed workbook or gallery data",
+          }
+          Path("sync-status.json").write_text(json.dumps(status, indent=2) + "\\n", encoding="utf-8")
+          PY
+
           git config user.name "hisab-sync[bot]"
           git config user.email "hisab-sync[bot]@users.noreply.github.com"
-          git add Hisab.xlsx images/manifest.json receipts/manifest.json
+          git add Hisab.xlsx images/manifest.json receipts/manifest.json sync-status.json
           git commit -m "Sync workbook and refresh gallery manifests"
           git push
