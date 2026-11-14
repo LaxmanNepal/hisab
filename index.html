@@ -184,7 +184,7 @@ body.dark-ui .our-overview-card span{color:#9aabc1}
 </section>
 
 <section class="our-overview section" id="ourOverview" aria-labelledby="ourOverviewTitle">
-<div class="our-overview-heading"><div><span class="dash-eyebrow">KEY FIGURES · SOURCE: ALL WORKSHEET</span><h2 id="ourOverviewTitle">Our Overview</h2><p>Eight key values taken directly from cells H2:I9 in the “All” sheet.</p></div><span class="our-overview-source">LIVE FROM EXCEL</span></div>
+<div class="our-overview-heading"><div><span class="dash-eyebrow">KEY FIGURES · SOURCE: ALL WORKSHEET</span><h2 id="ourOverviewTitle">Our Overview</h2><p>Six fields from H2:I4 and H7:I9 in the “All” sheet.</p></div><span class="our-overview-source">LIVE FROM EXCEL</span></div>
 <div class="our-overview-grid" id="ourOverviewGrid" aria-live="polite"><div class="our-overview-card"><span>Loading overview…</span><strong>—</strong></div></div>
 </section>
 
@@ -293,11 +293,12 @@ function renderOurOverview(){
  const root=el('ourOverviewGrid'),ws=wb?.Sheets?.['All'];
  if(!root)return;
  if(!ws){root.innerHTML='<div class="our-overview-card is-empty"><span>All worksheet</span><strong>Sheet not found</strong></div>';return}
- const items=Array.from({length:8},(_,i)=>{
-  const row=i+2,heading=ws['H'+row],value=ws['I'+row];
+ const sourceRows=[2,3,4,7,8,9];
+ const cleanText=v=>v===null||v===undefined?'':String(v).trim();
+ const items=sourceRows.map((row,i)=>{
+  const heading=ws['H'+row],value=ws['I'+row];
   const title=heading?(heading.w??heading.v??''):'';
   const data=value?(value.w??value.v??''):'';
-  const cleanText=v=>v===null||v===undefined?'':String(v).trim();
   return {title:cleanText(title)||'Field '+(i+1),value:cleanText(data),index:i+1};
  });
  root.innerHTML=items.map(item=>'<article class="our-overview-card'+(item.value?'':' is-empty')+'"><span class="our-overview-index">0'+item.index+'</span><span class="our-overview-label">'+esc(item.title)+'</span><strong>'+esc(item.value||'—')+'</strong><i class="our-overview-glow" aria-hidden="true"></i></article>').join('');
