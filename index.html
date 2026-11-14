@@ -135,6 +135,22 @@ body.dark-ui .our-overview{background:linear-gradient(135deg,#19283d,#1d3150);bo
 .recent-archive-more{display:inline-flex;align-items:center;justify-content:center;padding:9px 14px;border-radius:9px;background:var(--blue);color:#fff;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap}
 .recent-archive-empty{padding:20px;color:var(--muted);font-size:12px}
 @media(max-width:600px){.recent-archive{padding:0 14px}.recent-archive-panel{padding:15px}.recent-archive-item{flex-basis:72%;}.recent-archive-item img{height:145px}}
+/* Homepage activity and sync freshness */
+.sync-freshness{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:6px 9px;border:1px solid #dce6f1;border-radius:20px;background:#ffffffa8;color:#53677c;font-size:10px;font-weight:750}
+.sync-freshness::before{content:"";width:7px;height:7px;border-radius:50%;background:#94a3b8;flex:0 0 auto}
+.sync-freshness.fresh::before{background:#16a36d}
+.sync-freshness.stale::before{background:#d99a22}
+.sheet-activity{margin:0 0 18px}
+.sheet-activity-head{display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sheet-activity-head h2{font-size:17px;margin:0 0 3px;color:#1b3045}
+.sheet-activity-head p{font-size:11px;color:var(--muted);margin:0}
+.sheet-activity-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sheet-activity-card{background:rgba(255,255,255,.78);border:1px solid #ffffffd9;border-radius:12px;padding:13px 15px;box-shadow:0 8px 25px rgba(40,65,100,.06);min-width:0}
+.sheet-activity-card span{display:block;color:#718096;font-size:10px;font-weight:800;letter-spacing:.07em}
+.sheet-activity-card b{display:block;margin-top:6px;font-size:19px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.sheet-activity-card small{display:block;margin-top:3px;color:#718096;font-size:10px}
+@media(max-width:700px){.sheet-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sheet-activity-card{padding:12px}.sheet-activity-card b{font-size:17px}}
+
 </style>
 
 <style>
@@ -208,10 +224,10 @@ body.dark-ui .our-overview-card span{color:#9aabc1}
 </style>
 </head>
 <body>
-<header><div class="head"><div class="brand"><div class="logo">H</div><div><h1>HISAB</h1><small>Accounting & Journal Voucher Register</small></div></div><nav class="nav" aria-label="Main navigation"><a href="#allSummary">Overview</a><a href="#ledgerSection">Ledger</a><a href="#calendarSection" class="active">Calendar</a><a href="#featureDashboard">Analytics</a><a href="images/">Images</a><a href="receipts/">Receipts</a></nav><div class="headright">FINANCE WORKSPACE&nbsp; · &nbsp;READ ONLY</div></div></header>
+<header><div class="head"><div class="brand"><div class="logo">H</div><div><h1>HISAB</h1><small>Accounting & Journal Voucher Register</small></div></div><nav class="nav" aria-label="Main navigation"><a href="#ourOverview">Overview</a><a href="#ledgerSection">Ledger</a><a href="#calendarSection" class="active">Calendar</a><a href="#dailyActivity">Activity</a><a href="images/">Images</a><a href="receipts/">Receipts</a></nav><div class="headright">FINANCE WORKSPACE&nbsp; · &nbsp;READ ONLY</div></div></header>
 <main>
 <div class="crumb">Workspace / Accounting / Journal vouchers</div>
-<div class="titlebar"><div><div class="dash-eyebrow">YOUR DAILY FINANCE SNAPSHOT</div><h2>Journal Voucher Ledger</h2><p id="activeDateLabel">Opening today’s records…</p></div><div class="titlebar-right"><div class="live" id="status">● Connecting to workbook…</div><div class="selected-date-pill" id="selectedDatePill">TODAY</div></div></div>
+<div class="titlebar"><div><div class="dash-eyebrow">YOUR DAILY FINANCE SNAPSHOT</div><h2>Journal Voucher Ledger</h2><p id="activeDateLabel">Opening today’s records…</p></div><div class="titlebar-right"><div class="live" id="status">● Connecting to workbook…</div><div class="selected-date-pill" id="selectedDatePill">TODAY</div><div class="sync-freshness" id="syncFreshness" aria-live="polite">Last sync · checking…</div></div></div>
 <section class="balance-hero section" id="balanceHero" aria-live="polite">
 <div class="balance-hero-copy"><span class="balance-hero-eyebrow"><span class="balance-hero-pulse"></span> YOUR MONEY RIGHT NOW</span><h2>Today’s available balance</h2><p id="heroBalanceDate">Checking latest closing balance…</p><div class="hero-balance-value" id="heroBalanceValue">500.00 <span>KWD</span></div><div class="hero-balance-foot"><span class="hero-balance-dot"></span><span id="heroBalanceStatus">Waiting for workbook data</span></div></div>
 <div class="balance-hero-visual" aria-hidden="true"><div class="hero-orbit hero-orbit-one"></div><div class="hero-orbit hero-orbit-two"></div><div class="hero-coin">د.ك</div><div class="hero-visual-caption">CLOSING BALANCE</div></div>
@@ -220,6 +236,16 @@ body.dark-ui .our-overview-card span{color:#9aabc1}
 <section class="our-overview section" id="ourOverview" aria-labelledby="ourOverviewTitle">
 <div class="our-overview-heading"><div><span class="dash-eyebrow">KEY FIGURES · SOURCE: ALL WORKSHEET</span><h2 id="ourOverviewTitle">Our Overview</h2><p>Six fields from H2:I4 and H7:I9 in the “All” sheet.</p></div><span class="our-overview-source">LIVE FROM EXCEL</span></div>
 <div class="our-overview-grid" id="ourOverviewGrid" aria-live="polite"><div class="our-overview-card"><span>Loading overview…</span><strong>—</strong></div></div>
+</section>
+
+<section class="sheet-activity section" id="dailyActivity" aria-labelledby="dailyActivityTitle">
+ <div class="sheet-activity-head"><div><span class="dash-eyebrow">SELECTED WORKSHEET · LIVE CALCULATION</span><h2 id="dailyActivityTitle">Daily Activity</h2><p id="activitySheetName">Debit, credit and transaction totals for the open worksheet.</p></div></div>
+ <div class="sheet-activity-grid" id="sheetActivityGrid" aria-live="polite">
+  <article class="sheet-activity-card"><span>TRANSACTIONS</span><b>—</b><small>Selected worksheet</small></article>
+  <article class="sheet-activity-card"><span>TOTAL DEBIT</span><b>—</b><small>Detected debit entries</small></article>
+  <article class="sheet-activity-card"><span>TOTAL CREDIT</span><b>—</b><small>Detected credit entries</small></article>
+  <article class="sheet-activity-card"><span>NET MOVEMENT</span><b>—</b><small>Credit − debit</small></article>
+ </div>
 </section>
 
 <section class="all-summary section" id="allSummary">
@@ -344,7 +370,20 @@ function renderOurOverview(){
  });
  root.innerHTML=items.map(item=>'<article class="our-overview-card'+(item.value?'':' is-empty')+'"><span class="our-overview-index">0'+item.index+'</span><span class="our-overview-label">'+esc(item.title)+'</span><strong>'+esc(item.value||'—')+'</strong><i class="our-overview-glow" aria-hidden="true"></i></article>').join('');
 }
-function loadSheet(name){activeSheet=name;let ws=wb.Sheets[name],matrix=expandMerges(ws,XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false}));let best=0,bestScore=-1;for(let i=0;i<Math.min(matrix.length,35);i++){let s=scoreHeader(matrix[i]||[]);if(s>bestScore){bestScore=s;best=i}}headers=(matrix[best]||[]).map((v,i)=>clean(v)||'Column '+(i+1));while(headers.length&&/^Column \d+$/.test(headers.at(-1)))headers.pop();records=matrix.slice(best+1).filter(row=>row.some(v=>clean(v))).map(row=>headers.map((_,i)=>row[i]??''));records=records.filter(row=>row.some(v=>clean(v))&&!row.every((v,i)=>clean(v)===headers[i]));sortIndex=-1;page=1;render();el('tableTitle').textContent=name+' · Journal voucher';renderOriginal();el('analysisContent').innerHTML='<p class="muted">Choose <b>Analyze accounting</b> to run the checks for this worksheet.</p>';showMode('data')}
+function renderSheetActivity(name){
+ const root=el('sheetActivityGrid');if(!root)return;
+ const {d,c}=amountCols();let debit=0,credit=0,debitRows=0,creditRows=0;
+ records.forEach(row=>{const dv=d>=0?num(row[d]):null,cv=c>=0?num(row[c]):null;if(dv!==null){debit+=dv;debitRows++}if(cv!==null){credit+=cv;creditRows++}});
+ const net=credit-debit;
+ el('activitySheetName').textContent='Worksheet: '+name+' · '+records.length.toLocaleString()+' data rows · calculated from detected debit/credit columns';
+ root.innerHTML=[
+  ['TRANSACTIONS',records.length.toLocaleString(),'Rows in this worksheet'],
+  ['TOTAL DEBIT',d>=0?fmt(debit):'Not detected',debitRows.toLocaleString()+' numeric entries'],
+  ['TOTAL CREDIT',c>=0?fmt(credit):'Not detected',creditRows.toLocaleString()+' numeric entries'],
+  ['NET MOVEMENT',d>=0&&c>=0?fmt(net):'Not available','Credit − debit']
+ ].map((x,i)=>'<article class="sheet-activity-card"><span>'+x[0]+'</span><b class="'+(i===3?(net>=0?'positive':'negative'):'')+'">'+x[1]+'</b><small>'+x[2]+'</small></article>').join('');
+}
+function loadSheet(name){activeSheet=name;let ws=wb.Sheets[name],matrix=expandMerges(ws,XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false}));let best=0,bestScore=-1;for(let i=0;i<Math.min(matrix.length,35);i++){let s=scoreHeader(matrix[i]||[]);if(s>bestScore){bestScore=s;best=i}}headers=(matrix[best]||[]).map((v,i)=>clean(v)||'Column '+(i+1));while(headers.length&&/^Column \d+$/.test(headers.at(-1)))headers.pop();records=matrix.slice(best+1).filter(row=>row.some(v=>clean(v))).map(row=>headers.map((_,i)=>row[i]??''));records=records.filter(row=>row.some(v=>clean(v))&&!row.every((v,i)=>clean(v)===headers[i]));sortIndex=-1;page=1;render();el('tableTitle').textContent=name+' · Journal voucher';renderOriginal();el('analysisContent').innerHTML='<p class="muted">Choose <b>Analyze accounting</b> to run the checks for this worksheet.</p>';showMode('data');renderSheetActivity(name)}
 function amountCols(){return {d:headers.findIndex(h=>/\bdebit\b|\bdr\.?\b|डेबिट/i.test(h)),c:headers.findIndex(h=>/\bcredit\b|\bcr\.?\b|क्रेडिट/i.test(h))}}
 function renderCore(){let q=el('search').value.toLowerCase();filtered=records.filter(r=>r.some(v=>clean(v).toLowerCase().includes(q)));if(sortIndex>=0)filtered.sort((a,b)=>{let x=clean(a[sortIndex]),y=clean(b[sortIndex]),nx=num(x),ny=num(y),z=nx!==null&&ny!==null?nx-ny:x.localeCompare(y,undefined,{numeric:true,sensitivity:'base'});return sortAsc?z:-z});let {d,c}=amountCols(),ds=0,cs=0,dh=0,ch=0;filtered.forEach(r=>{let a=d>=0?num(r[d]):null,b=c>=0?num(r[c]):null;if(a!==null){ds+=a;dh++}if(b!==null){cs+=b;ch++}});el('count').textContent=filtered.length.toLocaleString();el('debit').textContent=dh?fmt(ds):'Not detected';el('credit').textContent=ch?fmt(cs):'Not detected';el('debitNote').textContent=dh?dh+' numeric entries':'No recognizable debit column';el('creditNote').textContent=ch?ch+' numeric entries':'No recognizable credit column';let size=el('rows').value==='All'?Math.max(filtered.length,1):Number(el('rows').value),pages=Math.max(1,Math.ceil(filtered.length/size));page=Math.min(page,pages);let start=(page-1)*size,view=filtered.slice(start,start+size);el('thead').innerHTML='<tr>'+headers.map((h,i)=>'<th><button data-sort="'+i+'">'+esc(h)+(sortIndex===i?(sortAsc?' ↑':' ↓'):'')+'</button></th>').join('')+'</tr>';el('tbody').innerHTML=view.length?view.map(r=>'<tr>'+headers.map((h,i)=>{let v=clean(r[i]);return '<td class="'+(num(v)!==null?'num':'')+'">'+esc(v)+'</td>'}).join('')+'</tr>').join(''):'<tr><td class="empty" colspan="'+Math.max(headers.length,1)+'">No matching transactions found</td></tr>';el('tfoot').innerHTML='<tr><td colspan="'+Math.max(headers.length,1)+'">FILTERED TOTALS '+(dh||ch?' · Debit: '+(dh?fmt(ds):'—')+' · Credit: '+(ch?fmt(cs):'—'):' · Amount columns not detected')+'</td></tr>';el('meta').textContent=filtered.length.toLocaleString()+' matching rows · '+headers.length+' columns';el('pageInfo').textContent=filtered.length?('Showing '+(start+1)+'–'+Math.min(start+size,filtered.length)+' of '+filtered.length):'No records';el('prev').disabled=page<=1;el('next').disabled=page>=pages;el('thead').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{let i=Number(b.dataset.sort);if(sortIndex===i)sortAsc=!sortAsc;else{sortIndex=i;sortAsc=true}render()}))}
 
@@ -426,6 +465,20 @@ function searchExcel(direction){let q=el("excelFind").value.trim().toLowerCase()
 function buildQuick(){let names=wb.SheetNames;el('quickSheets').innerHTML=names.map(n=>'<button class="sheetchip '+(n===activeSheet?'active':'')+'" data-name="'+esc(n)+'">'+esc(n)+'</button>').join('');el('quickSheets').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>chooseSheet(b.dataset.name)))}
 function renderCalendar(){let y=currentMonth.getFullYear(),m=currentMonth.getMonth(),first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),todayKey=dateKey({year:y,month:m,day:1});el('monthLabel').textContent=new Intl.DateTimeFormat('en',{month:'long',year:'numeric'}).format(currentMonth);let html=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>'<div class="dow">'+d+'</div>').join('');for(let i=0;i<first;i++)html+='<div></div>';for(let day=1;day<=days;day++){let k=dateKey({year:y,month:m,day}),names=sheetDates.get(k)||[],selected=el('datePick').value===k;html+='<div class="day '+(names.length?'hasdata ':'')+(selected?'selected':'')+'"><span class="dn">'+day+'</span>'+(names.length?'<div class="day-sheets">'+names.map(n=>'<button class="day-sheet" data-sheet="'+esc(n)+'" title="Open worksheet '+esc(n)+'">'+esc(n)+'</button>').join('')+'</div>':'')+'</div>'}el('calendar').innerHTML=html;el('calendar').querySelectorAll('button[data-sheet]').forEach(b=>b.addEventListener('click',()=>chooseSheet(b.dataset.sheet)));el('calFoot').textContent='Each date displays its worksheet name(s). Click a worksheet name to open that exact sheet · '+[...sheetDates.values()].reduce((a,b)=>a+b.length,0)+' date-named worksheets indexed.'}
 function selectDate(k){let names=sheetDates.get(k);el('datePick').value=k;if(!names||!names.length){renderCalendar();el('hint').textContent='No worksheet name matched '+k+'. Select a worksheet manually from the list.';return}chooseSheet(names[0]);if(names.length>1)el('hint').textContent='More than one worksheet matches this date: '+names.join(', ')+'. The first match is displayed; choose another from the worksheet selector.';else el('hint').textContent='Showing worksheet "'+names[0]+'" for '+k+'. The calendar selection loads the original worksheet data.'}
+async function loadSyncFreshness(){
+ const badge=el('syncFreshness');if(!badge)return;
+ try{
+  const response=await fetch('https://raw.githubusercontent.com/LaxmanNepal/hisab/main/sync-status.json',{cache:'no-store'});
+  if(!response.ok)throw Error('Sync metadata not found');
+  const data=await response.json(),stamp=new Date(data.synced_at);
+  if(!Number.isFinite(stamp.getTime()))throw Error('Invalid sync timestamp');
+  const age=Math.max(0,Date.now()-stamp.getTime()),hours=age/3600000;
+  const label=age<60000?'just now':hours<1?Math.floor(age/60000)+' min ago':hours<24?Math.floor(hours)+' hr ago':Math.floor(hours/24)+' days ago';
+  badge.textContent='Last successful sync · '+label;
+  badge.title='Synced '+stamp.toLocaleString()+(data.source_modified_at?' · Drive source modified '+new Date(data.source_modified_at).toLocaleString():'');
+  badge.classList.toggle('fresh',hours<1);badge.classList.toggle('stale',hours>=6);
+ }catch(error){badge.textContent='Sync timestamp unavailable';badge.title='The dashboard could not load sync-status.json';badge.classList.remove('fresh','stale')}
+}
 async function init(){try{currentMonth=kuwaitToday();let res=await fetch(FILE,{cache:'no-store'});if(!res.ok)throw Error('Workbook request failed ('+res.status+')');wb=XLSX.read(await res.arrayBuffer(),{type:'array',cellDates:true});if(!wb.SheetNames.length)throw Error('No worksheets found');indexSheets();showDailyBalance();renderOurOverview();loadDailyPhoto();el('sheets').textContent=wb.SheetNames.length;el('sheet').innerHTML=wb.SheetNames.map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join('');el('sheet').disabled=false;el('search').disabled=false;el('datePick').disabled=false;el('sheet').addEventListener('change',e=>chooseSheet(e.target.value));el('datePick').addEventListener('change',e=>{let k=e.target.value;if(!k)return;let [y,m,d]=k.split('-').map(Number);currentMonth=new Date(y,m-1,1);selectDate(k)});el('search').addEventListener('input',()=>{page=1;render()});el('rows').addEventListener('change',()=>{page=1;render()});el('clear').addEventListener('click',()=>{el('search').value='';el('rows').value='50';sortIndex=-1;page=1;render()});el('dataMode').addEventListener('click',()=>showMode('data'));el('voucherMode').addEventListener('click',()=>showMode('voucher'));el('analysisMode').addEventListener('click',()=>analyzeAccounting());el('prev').addEventListener('click',()=>{page--;render()});el('next').addEventListener('click',()=>{page++;render()});el('prevMonth').addEventListener('click',()=>{currentMonth=new Date(currentMonth.getFullYear(),currentMonth.getMonth()-1,1);renderCalendar()});el('nextMonth').addEventListener('click',()=>{currentMonth=new Date(currentMonth.getFullYear(),currentMonth.getMonth()+1,1);renderCalendar()});el('photoPrev').addEventListener('click',()=>{dailyPhotoIndex=Math.max(0,dailyPhotoIndex-1);renderDailyPhoto()});el('photoNext').addEventListener('click',()=>{dailyPhotoIndex=Math.min(dailyPhotos.length-1,dailyPhotoIndex+1);renderDailyPhoto()});el('openExcelViewer').addEventListener('click',openExcelViewer);el('closeExcelViewer').addEventListener('click',closeExcelViewer);el('excelOverlay').addEventListener('click',e=>{if(e.target===el('excelOverlay'))closeExcelViewer()});el('excelFindNext').addEventListener('click',()=>searchExcel(1));el('excelFindPrev').addEventListener('click',()=>searchExcel(-1));el('excelFind').addEventListener('keydown',e=>{if(e.key==='Enter')searchExcel(1);if(e.key==='Escape')closeExcelViewer()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('excelOverlay').classList.contains('open'))closeExcelViewer()});const today=kuwaitToday(),todayKey=dateKey({year:today.getFullYear(),month:today.getMonth(),day:today.getDate()}),todaySheets=sheetDates.get(todayKey)||[];let first=todaySheets[0];if(!first){const earlier=wb.SheetNames.map(name=>({name,date:sheetDateObj(name)})).filter(x=>x.date&&x.date<=today).sort((a,b)=>a.date-b.date);first=earlier.length?earlier[earlier.length-1].name:(wb.SheetNames.find(n=>parseSheetDate(n))||wb.SheetNames[0]);}chooseSheet(first);renderCalendar();bindExtendedFeatures();el('jumpToday').addEventListener('click',()=>{const t=kuwaitToday(),k=dateKey({year:t.getFullYear(),month:t.getMonth(),day:t.getDate()}),matches=sheetDates.get(k)||[];currentMonth=new Date(t.getFullYear(),t.getMonth(),1);if(matches.length){chooseSheet(matches[0]);el('hint').textContent='Back to today’s worksheet: '+matches[0]+'.';}else{const prev=wb.SheetNames.map(name=>({name,date:sheetDateObj(name)})).filter(x=>x.date&&x.date<=t).sort((a,b)=>a.date-b.date).at(-1);if(prev){chooseSheet(prev.name);el('hint').textContent='No worksheet exists for today. Showing the latest earlier worksheet: '+prev.name+'.';}else{renderCalendar();el('hint').textContent='No worksheet is available for today or an earlier date. Choose a date or worksheet manually.';}}});setStatus('Workbook connected · '+wb.SheetNames.length+' worksheets')}catch(e){setStatus('Workbook unavailable',true);el('hint').textContent=e.message+' · Confirm Hisab.xlsx is public in the repository.';el('hint').classList.add('error');el('tbody').innerHTML='<tr><td class="empty">Could not read workbook.</td></tr>'}}
 
 
@@ -551,6 +604,7 @@ async function loadRecentImageArchive(){
  }catch(error){track.innerHTML='<div class="recent-archive-empty">Recent images could not be loaded. <a href="images/">Open image archive</a>.</div>'}
 }
 
+loadSyncFreshness();
 init();
 loadRecentImageArchive();
 </script></body></html>
