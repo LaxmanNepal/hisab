@@ -106,7 +106,7 @@ jobs:
 
       - name: Commit workbook and gallery manifests when changed
         run: |
-          if git diff --quiet -- Hisab.xlsx images/manifest.json receipts/manifest.json; then
+          if git diff --quiet -- Hisab.xlsx images/manifest.json receipts/manifest.json && [ -f sync-status.json ]; then
             echo "Workbook and gallery manifests are already up to date."
             exit 0
           fi
