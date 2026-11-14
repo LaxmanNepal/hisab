@@ -474,7 +474,7 @@ async function loadSyncFreshness(){
   if(!Number.isFinite(stamp.getTime()))throw Error('Invalid sync timestamp');
   const age=Math.max(0,Date.now()-stamp.getTime()),hours=age/3600000;
   const label=age<60000?'just now':hours<1?Math.floor(age/60000)+' min ago':hours<24?Math.floor(hours)+' hr ago':Math.floor(hours/24)+' days ago';
-  badge.textContent='Last successful sync · '+label;
+  badge.textContent='Last data publish · '+label;
   badge.title='Synced '+stamp.toLocaleString()+(data.source_modified_at?' · Drive source modified '+new Date(data.source_modified_at).toLocaleString():'');
   badge.classList.toggle('fresh',hours<1);badge.classList.toggle('stale',hours>=6);
  }catch(error){badge.textContent='Sync timestamp unavailable';badge.title='The dashboard could not load sync-status.json';badge.classList.remove('fresh','stale')}
