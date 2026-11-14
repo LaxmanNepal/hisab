@@ -151,6 +151,15 @@ body.dark-ui .our-overview{background:linear-gradient(135deg,#19283d,#1d3150);bo
 .sheet-activity-card small{display:block;margin-top:3px;color:#718096;font-size:10px}
 @media(max-width:700px){.sheet-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sheet-activity-card{padding:12px}.sheet-activity-card b{font-size:17px}}
 
+/* Our Overview: centered values and field-specific status colors */
+.our-overview-card{align-items:center;text-align:center}
+.our-overview-card .our-overview-index,.our-overview-card .our-overview-label,.our-overview-card strong{width:100%;text-align:center}
+.our-overview-card.overview-field-1 strong{color:#d14343!important}
+.our-overview-card.overview-field-2 strong{color:#16834b!important}
+.our-overview-card.is-negative strong{color:#d14343!important}
+body.dark-ui .our-overview-card.overview-field-1 strong,body.dark-ui .our-overview-card.is-negative strong{color:#ff7777!important}
+body.dark-ui .our-overview-card.overview-field-2 strong{color:#54d58a!important}
+
 </style>
 
 <style>
@@ -357,18 +366,49 @@ function chooseSheet(name){if(!name||!wb.Sheets[name])return;el('sheet').value=n
 function expandMerges(ws,matrix){(ws['!merges']||[]).forEach(m=>{let v=matrix[m.s.r]?.[m.s.c];if(v!==undefined&&v!=='')for(let r=m.s.r;r<=m.e.r;r++)for(let c=m.s.c;c<=m.e.c;c++){matrix[r]??=[];if(matrix[r][c]===''||matrix[r][c]===undefined)matrix[r][c]=v}});return matrix}
 function scoreHeader(row){let vals=row.map(clean).filter(Boolean);if(vals.length<2)return -1;let words=vals.join(' ').toLowerCase();let keywords=/date|voucher|particular|narration|account|debit|credit|amount|ledger|भौचर|मिति|विवरण|डेबिट|क्रेडिट|खाता|जम्मा/.test(words);return vals.length+(keywords?5:0)}
 function renderOurOverview(){
- const root=el('ourOverviewGrid'),ws=wb?.Sheets?.['All'];
+ const root=el('ourOverviewGrid');
  if(!root)return;
+ const sheetName=wb?.SheetNames?.find(n=>String(n).trim().toLowerCase()==='all');
+ const ws=sheetName?wb.Sheets[sheetName]:null;
  if(!ws){root.innerHTML='<div class="our-overview-card is-empty"><span>All worksheet</span><strong>Sheet not found</strong></div>';return}
  const sourceRows=[2,3,4,7,8,9];
  const cleanText=v=>v===null||v===undefined?'':String(v).trim();
+ const getCell=(col,row)=>{
+  const address=col+row;
+  let cell=ws[address];
+  if(cell&&(cell.v!==undefined&&cell.v!==null||cell.w))return cell;
+  const merges=ws['!merges']||[];
+  const target=XLSX.utils.decode_cell(address);
+  const merged=merges.find(range=>target.r>=range.s.r&&target.r<=range.e.r&&target.c>=range.s.c&&target.c<=range.e.c);
+  if(merged)cell=ws[XLSX.utils.encode_cell(merged.s)];
+  return cell||null;
+ };
+ const displayCell=cell=>{
+  if(!cell)return '';
+  if(cell.w!==undefined&&cell.w!==null&&String(cell.w).trim()!=='')return String(cell.w);
+  if(cell.v===undefined||cell.v===null)return '';
+  try{return XLSX.utils.format_cell(cell)}catch(_){return String(cell.v)}
+ };
+ const numericValue=value=>{
+  let raw=String(value??'').trim();
+  if(!raw)return null;
+  const negative=/^\\(.*\\)$/.test(raw);
+  raw=raw.replace(/[(),]/g,'').replace(/[^0-9.\\-]/g,'');
+  if(!raw||raw==='-'||raw==='.')return null;
+  const n=Number(raw);
+  return Number.isFinite(n)?(negative?-Math.abs(n):n):null;
+ };
  const items=sourceRows.map((row,i)=>{
-  const heading=ws['H'+row],value=ws['I'+row];
-  const title=heading?(heading.w??heading.v??''):'';
-  const data=value?(value.w??value.v??''):'';
-  return {title:cleanText(title)||'Field '+(i+1),value:cleanText(data),index:i+1};
+  const heading=getCell('H',row),value=getCell('I',row);
+  const title=displayCell(heading),data=displayCell(value);
+  return {title:cleanText(title)||'Field '+(i+1),value:cleanText(data),index:i+1,numeric:numericValue(data)};
  });
- root.innerHTML=items.map(item=>'<article class="our-overview-card'+(item.value?'':' is-empty')+'"><span class="our-overview-index">0'+item.index+'</span><span class="our-overview-label">'+esc(item.title)+'</span><strong>'+esc(item.value||'—')+'</strong><i class="our-overview-glow" aria-hidden="true"></i></article>').join('');
+ root.innerHTML=items.map(item=>{
+  const classes=['our-overview-card','overview-field-'+item.index];
+  if(!item.value)classes.push('is-empty');
+  if(item.numeric!==null&&item.numeric<0)classes.push('is-negative');
+  return '<article class="'+classes.join(' ')+'"><span class="our-overview-index">0'+item.index+'</span><span class="our-overview-label">'+esc(item.title)+'</span><strong>'+esc(item.value||'—')+'</strong><i class="our-overview-glow" aria-hidden="true"></i></article>';
+ }).join('');
 }
 function renderSheetActivity(name){
  const root=el('sheetActivityGrid');if(!root)return;
