@@ -376,11 +376,15 @@ function renderOurOverview(){
  const getCell=(col,row)=>{
   const address=col+row;
   let cell=ws[address];
-  if(cell&&(cell.v!==undefined&&cell.v!==null||cell.w))return cell;
+  const hasValue=c=>!!c&&((c.v!==undefined&&c.v!==null&&String(c.v).trim()!=='')||(c.w!==undefined&&c.w!==null&&String(c.w).trim()!==''));
+  if(hasValue(cell))return cell;
   const merges=ws['!merges']||[];
   const target=XLSX.utils.decode_cell(address);
   const merged=merges.find(range=>target.r>=range.s.r&&target.r<=range.e.r&&target.c>=range.s.c&&target.c<=range.e.c);
-  if(merged)cell=ws[XLSX.utils.encode_cell(merged.s)];
+  if(merged){
+   const anchor=ws[XLSX.utils.encode_cell(merged.s)];
+   if(hasValue(anchor))return anchor;
+  }
   return cell||null;
  };
  const displayCell=cell=>{
