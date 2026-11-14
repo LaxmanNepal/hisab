@@ -392,7 +392,7 @@ function renderOurOverview(){
  const numericValue=value=>{
   let raw=String(value??'').trim();
   if(!raw)return null;
-  const negative=/^\\(.*\\)$/.test(raw);
+  const negative=/^\(.*\)$/.test(raw);
   raw=raw.replace(/[(),]/g,'').replace(/[^0-9.\\-]/g,'');
   if(!raw||raw==='-'||raw==='.')return null;
   const n=Number(raw);
