@@ -393,7 +393,7 @@ function renderOurOverview(){
   let raw=String(value??'').trim();
   if(!raw)return null;
   const negative=/^\(.*\)$/.test(raw);
-  raw=raw.replace(/[(),]/g,'').replace(/[^0-9.\\-]/g,'');
+  raw=raw.replace(/[(),]/g,'').replace(/[^0-9.-]/g,'');
   if(!raw||raw==='-'||raw==='.')return null;
   const n=Number(raw);
   return Number.isFinite(n)?(negative?-Math.abs(n):n):null;
