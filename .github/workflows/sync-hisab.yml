@@ -124,7 +124,7 @@ jobs:
               "source_modified_at": source.get("source_modified_at"),
               "meaning": "Last successful sync that published changed workbook or gallery data",
           }
-          Path("sync-status.json").write_text(json.dumps(status, indent=2) + "\\n", encoding="utf-8")
+          Path("sync-status.json").write_text(json.dumps(status, indent=2), encoding="utf-8")
           PY
 
           git config user.name "hisab-sync[bot]"
