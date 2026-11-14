@@ -519,8 +519,8 @@ async function loadRecentImageArchive(){
   if(!response.ok)throw Error('Image archive unavailable');
   const files=await response.json();
   const months=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-  const items=files.filter(f=>/\\.(jpe?g|png|webp|gif|avif)$/i.test(f.name)).map(f=>{
-   const match=f.name.toLowerCase().match(/^(\\d{1,2})[-_ ]([a-z]{3,9})(?:[-_ ](20\\d{2}))?\\./);
+  const items=files.filter(f=>/\.(jpe?g|png|webp|gif|avif)$/i.test(f.name)).map(f=>{
+   const match=f.name.toLowerCase().match(/^(\d{1,2})[-_ ]([a-z]{3,9})(?:[-_ ](20\d{2}))?\./);
    if(!match)return null;const month=months.findIndex(m=>match[2].startsWith(m));if(month<0)return null;
    const day=Number(match[1]),year=Number(match[3]||new Date().getFullYear());const date=new Date(year,month,day);
    if(date.getMonth()!==month||date.getDate()!==day)return null;
