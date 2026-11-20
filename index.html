@@ -416,6 +416,7 @@ function renderOurOverview(){
   const finalValue=override?override.value:cleanText(data);
   return {title:finalTitle,value:finalValue,index:i+1,numeric:numericValue(finalValue)};
  });
+ items.push({title:'तोपजीले दिन बाकी',value:'1.250 KD',index:7,numeric:numericValue('1.250 KD')});
  root.innerHTML=items.map(item=>{
   const classes=['our-overview-card','overview-field-'+item.index];
   if(!item.value)classes.push('is-empty');
