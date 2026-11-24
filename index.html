@@ -246,7 +246,7 @@ body.dark-ui .our-overview-card span{color:#9aabc1}
 </section>
 
 <section class="our-overview section" id="ourOverview" aria-labelledby="ourOverviewTitle">
-<div class="our-overview-heading"><div><span class="dash-eyebrow">KEY FIGURES · SOURCE: ALL WORKSHEET</span><h2 id="ourOverviewTitle">Our Overview</h2><p>Six fields from H2:I4 and H7:I9 in the “All” sheet.</p></div><span class="our-overview-source">LIVE FROM EXCEL</span></div>
+<div class="our-overview-heading"><div><span class="dash-eyebrow">KEY FIGURES · SOURCE: ALL WORKSHEET</span><h2 id="ourOverviewTitle">Our Overview</h2><p>Four selected figures.</p></div><span class="our-overview-source">LIVE FROM EXCEL</span></div>
 <div class="our-overview-grid" id="ourOverviewGrid" aria-live="polite"><div class="our-overview-card"><span>Loading overview…</span><strong>—</strong></div></div>
 </section>
 
@@ -417,7 +417,8 @@ function renderOurOverview(){
   return {title:finalTitle,value:finalValue,index:i+1,numeric:numericValue(finalValue)};
  });
  items.push({title:'तोपजीले दिन बाकी',value:'1.250 KD',index:7,numeric:numericValue('1.250 KD')});
- root.innerHTML=items.map(item=>{
+ const visibleItems=items.filter(item=>![4,5,7].includes(item.index));
+ root.innerHTML=visibleItems.map(item=>{
   const classes=['our-overview-card','overview-field-'+item.index];
   if(!item.value)classes.push('is-empty');
   if(item.numeric!==null&&item.numeric<0)classes.push('is-negative');
