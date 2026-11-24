@@ -138,6 +138,12 @@
     "download_url": "https://raw.githubusercontent.com/LaxmanNepal/hisab/main/images/23-nov.jpg"
   },
   {
+    "name": "24-nov.jpg",
+    "path": "images/24-nov.jpg",
+    "size": 181100,
+    "download_url": "https://raw.githubusercontent.com/LaxmanNepal/hisab/main/images/24-nov.jpg"
+  },
+  {
     "name": "30-oct.jpg",
     "path": "images/30-oct.jpg",
     "size": 247290,
